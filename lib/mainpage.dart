@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
             Text(
               Constants.jokeSetup,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300),
+              style: TextStyle(fontSize: 40, fontFamily: 'Quicksand', fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 10,),
             Text(Constants.jokePunchline, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),)

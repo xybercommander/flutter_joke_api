@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(        
         primarySwatch: Colors.purple,
+        fontFamily: 'Quicksand-Bold'
       ),
       home: SplashScreen(),
     );

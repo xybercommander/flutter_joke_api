@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jokes_app/api.dart';
 import 'package:jokes_app/mainpage.dart';
-import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -30,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Lottie.asset('assets/animations/loading-lottie.json')
+        child: Text('Hola!', style: TextStyle(fontSize: 40),)
       ),
     );
   }
