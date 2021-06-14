@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:jokes_app/api.dart';
 import 'package:jokes_app/constants.dart';
 
@@ -8,6 +9,35 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {  
+  ScrollController _hideBottomNavController;
+  bool _isVisible = true;
+
+  @override
+  initState() {
+    super.initState();
+    _isVisible = true;
+    _hideBottomNavController = ScrollController();
+    _hideBottomNavController.addListener(
+      () {
+        print(_hideBottomNavController.position);
+        if (_hideBottomNavController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (_isVisible)
+            setState(() {
+              _isVisible = false;
+            });
+        }
+        if (_hideBottomNavController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (!_isVisible)
+            setState(() {
+              _isVisible = true;
+            });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,33 +48,47 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
       ),
 
-      body: Container(        
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              Constants.jokeSetup,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 40, fontFamily: 'Quicksand', fontWeight: FontWeight.w700),
+      body: ListView.builder(
+        controller: _hideBottomNavController,
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: 20,
+        itemBuilder: (context, index) => Container(
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          height: 80,
+          width: MediaQuery.of(context).size.width,          
+          child: Card(
+            elevation: 10,
+            child: Center(
+              child: Text('Card $index'),
             ),
-            SizedBox(height: 10,),
-            Text(Constants.jokePunchline, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),)
-          ],
+          ),
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.next_plan),
-        onPressed: () async {          
-          await JokesApi().callJokesApi();
-          setState(() {
-            
-          });
-        },
+      bottomNavigationBar: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        height: _isVisible ? 56 : 0,
+        child: Wrap(
+          children: [
+            BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home'
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.chat),
+                  label: 'Chat'
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.info),
+                  label: 'Info'
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
